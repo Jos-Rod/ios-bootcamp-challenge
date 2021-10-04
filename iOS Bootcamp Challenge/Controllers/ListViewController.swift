@@ -13,6 +13,7 @@ class ListViewController: UICollectionViewController, SearchBarDelegate {
     private var pokemons: [Pokemon] = []
     private var resultPokemons: [Pokemon] = []
     private var detailPokemon: Pokemon?
+    var activityIndicator: UIActivityIndicatorView?
 
     // TODO: Use UserDefaults to pre-load the latest search at start
 
@@ -25,7 +26,7 @@ class ListViewController: UICollectionViewController, SearchBarDelegate {
         return searchController
     }()
 
-    private var isFirstLauch: Bool = true
+    private var isFirstLaunch: Bool = true
 
     // TODO: Add a loading indicator when the app first launches and has no pokemons
 
@@ -141,6 +142,7 @@ class ListViewController: UICollectionViewController, SearchBarDelegate {
 
     @objc func refresh() {
         shouldShowLoader = true
+        if isFirstLaunch { showActivityIndicator() }
 
         var pokemons: [Pokemon] = []
         
@@ -166,6 +168,8 @@ class ListViewController: UICollectionViewController, SearchBarDelegate {
     
     private func didRefresh() {
         shouldShowLoader = false
+        if isFirstLaunch { hideActivityIndicator() }
+        isFirstLaunch = false
 
         guard
             let collectionView = collectionView,
@@ -177,4 +181,17 @@ class ListViewController: UICollectionViewController, SearchBarDelegate {
         filterContentForSearchText("")
     }
 
+    func showActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator?.center = self.view.center
+        self.view.addSubview(activityIndicator!)
+        activityIndicator?.startAnimating()
+    }
+
+    func hideActivityIndicator(){
+        if (activityIndicator != nil){
+            activityIndicator?.stopAnimating()
+        }
+    }
+    
 }
