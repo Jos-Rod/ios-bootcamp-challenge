@@ -8,7 +8,7 @@
 import UIKit
 //import SVProgressHUD
 
-class ListViewController: UICollectionViewController {
+class ListViewController: UICollectionViewController, SearchBarDelegate {
 
     private var pokemons: [Pokemon] = []
     private var resultPokemons: [Pokemon] = []
@@ -88,6 +88,12 @@ class ListViewController: UICollectionViewController {
     }
 
     // TODO: Implement the SearchBar
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {  }
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {  }
+    
+    func updateSearchResults(for text: String) {
+        filterContentForSearchText(text)
+    }
 
     // MARK: - UICollectionViewDataSource
 
