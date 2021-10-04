@@ -6,12 +6,13 @@
 //
 
 import UIKit
-import SVProgressHUD
+//import SVProgressHUD
 
 class ListViewController: UICollectionViewController {
 
     private var pokemons: [Pokemon] = []
     private var resultPokemons: [Pokemon] = []
+    private var detailPokemon: Pokemon?
 
     // TODO: Use UserDefaults to pre-load the latest search at start
 
@@ -105,6 +106,30 @@ class ListViewController: UICollectionViewController {
     // MARK: - Navigation
 
     // TODO: Handle navigation to detail view controller
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedPokemon = resultPokemons[indexPath.item]
+        print("Selected something")
+        print(selectedPokemon)
+        let test = PokeAPI()
+        test.get(url: "pokemon/\(selectedPokemon.id)", onCompletion: gotInfo)
+    }
+    
+    func gotInfo(pok: Pokemon?, err: Error?) -> Void {
+        if ((err == nil)) {
+            detailPokemon = pok ?? nil
+            self.performSegue(withIdentifier: "presentDetailPokemon", sender: nil)
+            } else {
+                print("Hubo error")
+            }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.destination is DetailViewController {
+            print("Destination controller")
+                let vc = segue.destination as? DetailViewController
+                vc?.pokemon = detailPokemon
+            }
+    }
 
     // MARK: - UI Hooks
 

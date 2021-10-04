@@ -41,6 +41,7 @@ struct Pokemon: Decodable, Equatable {
         case id
         case name
         case image
+        case slot
         case type
         case types
         case sprites
@@ -51,6 +52,26 @@ struct Pokemon: Decodable, Equatable {
         case ability
         case weight
         case baseExperience = "base_experience"
+    }
+    
+    struct SType: Codable {
+        var type: SDetailType
+    }
+    
+    struct SDetailType: Codable {
+        var name: String
+        var url: String
+    }
+    
+    struct SAbility: Codable {
+        let is_hidden: Bool
+        let slot: Int
+        let ability: SDetailType
+    }
+
+    struct SDetailAbility: Codable {
+        let name: String
+        let url: String
     }
 
     init(from decoder: Decoder) throws {
@@ -63,9 +84,11 @@ struct Pokemon: Decodable, Equatable {
         self.image = try? officialArtWork.decode(String.self, forKey: .frontDefault)
 
         // TODO: Decode list of types & abilities
-
-        self.types = []
-        self.abilities = []
+        let typesObj = try container.decode([SType].self, forKey: .types)
+        let abilitiesObj = try container.decode([SAbility].self, forKey: .abilities)
+        
+        self.types = typesObj.map({ $0.type.name })
+        self.abilities = abilitiesObj.map({ $0.ability.name })
 
         self.weight = try container.decode(Float.self, forKey: .weight)
         self.baseExperience = try container.decode(Int.self, forKey: .baseExperience)

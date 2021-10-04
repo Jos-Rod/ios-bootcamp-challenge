@@ -26,9 +26,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </collectionViewCellContentView>
-                                <connections>
-                                    <segue destination="hta-OE-VYE" kind="presentation" identifier="goDetailViewControllerSegue" id="X9f-eo-c84"/>
-                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -37,6 +34,9 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="u52-VY-qtd"/>
+                    <connections>
+                        <segue destination="hta-OE-VYE" kind="presentation" identifier="presentDetailPokemon" id="XLc-f0-7VE"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hI8-Ar-r4j" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
